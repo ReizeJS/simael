@@ -1,14 +1,23 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InviteSquadController;
 use App\Http\Controllers\LoginRegisterController;
 use App\Http\Controllers\SquadController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard')->middleware('student.auth');
 
+// Landing Page (halaman awal)
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Dashboard (halaman setelah login)
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard')
+    ->middleware('student.auth');
+
+// Auth
 Route::controller(LoginRegisterController::class)->group(function() {
     Route::get('/login', 'loginPage')->name('loginPage');
     Route::post('/login', 'login')->name('login');
@@ -19,9 +28,11 @@ Route::controller(LoginRegisterController::class)->group(function() {
     Route::post('/logout', 'logout')->name('logout');
 });
 
+// Resource
 Route::resource('students', StudentController::class);
-
 Route::resource('squads', SquadController::class);
-
-Route::match(['get', 'post'], '/squads-preview', [SquadController::class, 'preview'])->name('squads.preview');
 Route::resource('invite', InviteSquadController::class);
+
+// Preview
+Route::match(['get', 'post'], '/squads-preview', [SquadController::class, 'preview'])
+    ->name('squads.preview');

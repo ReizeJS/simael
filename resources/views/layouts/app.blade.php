@@ -43,7 +43,7 @@
                                 @teacher
                                     Teacher Dashboard
                                     @else
-                                    Sistem Manajemen Pintar PKL
+                                    Sistem Manajemen PKL
                                 @endteacher
                             @endstudent
                         </p>
