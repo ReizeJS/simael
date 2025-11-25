@@ -9,10 +9,10 @@ use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
 
 
-// Landing Page (halaman awal)
+// Landing Page
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Dashboard (halaman setelah login)
+// Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard')
     ->middleware('student.auth');
