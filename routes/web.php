@@ -28,9 +28,11 @@ Route::controller(LoginRegisterController::class)->group(function() {
     Route::post('/logout', 'logout')->name('logout');
 });
 
-// Resource
-Route::resource('students', StudentController::class);
 Route::resource('squads', SquadController::class);
+Route::post('/squads/{squad}/leave', [SquadController::class, 'leave'])->name('squads.leave');
+Route::post('/squads/{student}/kick', [SquadController::class, 'kickMember'])->name('squads.kick');
+
+Route::post('invite/{invite}/join', [InviteSquadController::class, 'join'])->name('invite.join');
 Route::resource('invite', InviteSquadController::class);
 
 

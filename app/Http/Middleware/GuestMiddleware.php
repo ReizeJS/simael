@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class GuestMiddleware
@@ -13,11 +14,22 @@ class GuestMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next, string ...$guards): Response
     {
-        if (session('student_id') || session('teacher_id'))
-        {
-            return redirect()->route('dashboard');
+        $guards = empty($guards) ? [null] : $guards;
+
+        foreach ($guards as $guard) {
+            if (Auth::guard($guard)->check()) {
+
+                if ($guard === 'student') {
+                    return redirect('/');
+                }
+
+                if ($guard === 'teacher') {
+                    return redirect('/teacher/dashboard');
+                }
+
+            }
         }
 
         return $next($request);
